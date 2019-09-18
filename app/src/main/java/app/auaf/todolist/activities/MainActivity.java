@@ -15,6 +15,7 @@ import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
 
     private NotesAdapter mAdapter;
     private List<Note> notesList = new ArrayList<>();
-
     private RecyclerView recyclerView;
     private TextView noNotesView;
     FloatingActionButton fab ;
@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
         noNotesView = findViewById(R.id.empty_notes_view);
 
         db = new DatabaseHelper(this);
-
         notesList.addAll(db.getAllNotes());
 
          fab = findViewById(R.id.fab);
@@ -183,6 +182,10 @@ public class MainActivity extends AppCompatActivity {
                         showNoteDialog(true, notesList.get(position), position);
                     } else {
                         deleteNote(position);
+
+
+
+
                     }
                 }
             });
