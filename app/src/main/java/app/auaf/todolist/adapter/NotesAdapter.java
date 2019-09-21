@@ -25,14 +25,16 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
  
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView note;
-        public TextView dot;
-        public TextView timestamp;
+        public TextView noteTitle;
+//        public TextView dot;
+//        public TextView timestamp;
  
         public MyViewHolder(View view) {
             super(view);
             note = view.findViewById(R.id.note);
-            dot = view.findViewById(R.id.dot);
-            timestamp = view.findViewById(R.id.timestamp);
+            noteTitle = view.findViewById(R.id.idTitleNote);
+//            dot = view.findViewById(R.id.dot);
+//            timestamp = view.findViewById(R.id.timestamp);
         }
     }
  
@@ -53,12 +55,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Note note = notesList.get(position);
- 
-        holder.note.setText(note.getNote());
- 
-        // Displaying dot from HTML character code
 
-        // Formatting and displaying timestamp
+        holder.note.setText(note.getNote());
+                holder.noteTitle.setText(note.getTitle());
+
 
     }
  
@@ -66,10 +66,5 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     public int getItemCount() {
         return notesList.size();
     }
- 
-    /**
-     * Formatting timestamp to `MMM d` format
-     * Input: 2018-02-21 00:15:42
-     * Output: Feb 21
-     */
+
 }

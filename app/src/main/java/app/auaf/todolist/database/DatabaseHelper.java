@@ -11,9 +11,7 @@ import java.util.List;
 
 import app.auaf.todolist.model.Note;
 
-/**
- * Created by ravi on 15/03/18.
- */
+
  
 public class DatabaseHelper extends SQLiteOpenHelper {
  
@@ -26,7 +24,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_TITLE = "title";
     private static final String COLUMN_NOTE = "note";
-    private static final String COLUMN_PLACE = "place";
 
 
 
@@ -35,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + TABLE_NAME + "("
                     + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + COLUMN_NOTE + " TEXT,"
-                    + COLUMN_TITLE + " TEXT," + COLUMN_PLACE + " TEXT"
+                    + COLUMN_TITLE + " TEXT"
                     + ")";
  
  
@@ -62,7 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 //iNSERTING ONLY NOTE TEXT
-    public long insertNote(String note) {
+    public long insertNote(String note,String title) {
         // get writable database as we want to write data
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -70,6 +67,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // `id` and `timestamp` will be inserted automatically.
         // no need to add them
         values.put(COLUMN_NOTE, note);
+        values.put(COLUMN_TITLE, title);
+
 
         // insert row
         long id = db.insert(TABLE_NAME, null, values);
@@ -90,7 +89,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_NAME,
-                new String[]{COLUMN_ID, COLUMN_NOTE, COLUMN_TITLE,COLUMN_PLACE},
+                new String[]{COLUMN_ID, COLUMN_NOTE, COLUMN_TITLE},
                 COLUMN_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
 
@@ -101,8 +100,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Note note = new Note(
                 cursor.getInt(cursor.getColumnIndex(COLUMN_ID)),
                 cursor.getString(cursor.getColumnIndex(COLUMN_NOTE)),
-                cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
-                cursor.getString(cursor.getColumnIndex(COLUMN_PLACE))
+                cursor.getString(cursor.getColumnIndex(COLUMN_TITLE))
         );
 
         // close the db connection
@@ -128,7 +126,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Note note = new Note();
                 note.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
                 note.setNote(cursor.getString(cursor.getColumnIndex(COLUMN_NOTE)));
-                note.setPlace(cursor.getString(cursor.getColumnIndex(COLUMN_PLACE)));
                 note.setTitle(cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)));
 
                 notes.add(note);

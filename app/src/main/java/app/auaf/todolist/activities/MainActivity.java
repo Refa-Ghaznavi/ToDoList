@@ -1,6 +1,8 @@
 package app.auaf.todolist.activities;
 
 import android.app.AlertDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -16,6 +18,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -76,11 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
         toggleEmptyNotes();
 
-        /**
-         * On long press on RecyclerView item, open alert dialog
-         * with options to choose
-         * Edit and Delete
-         * */
+
     }
 
     @Override
@@ -112,10 +111,10 @@ public class MainActivity extends AppCompatActivity {
          * Inserting new note in db
          * and refreshing the list
          */
-        private void createNote(String note) {
+        private void createNote(String note,String title) {
             // inserting note in db and getting
             // newly inserted note id
-            long id = db.insertNote(note);
+            long id = db.insertNote(note,title);
 
             // get the newly inserted note from db
             Note n = db.getNote(id);
@@ -130,6 +129,13 @@ public class MainActivity extends AppCompatActivity {
                 toggleEmptyNotes();
             }
         }
+
+
+
+
+
+
+
 
         /**
          * Updating note in db and updating
@@ -206,8 +212,12 @@ public class MainActivity extends AppCompatActivity {
             alertDialogBuilderUserInput.setView(view);
 
             final EditText inputNote = view.findViewById(R.id.note);
+            final EditText etTitleNote = view.findViewById(R.id.titleNote);
+
             TextView dialogTitle = view.findViewById(R.id.dialog_title);
             dialogTitle.setText(!shouldUpdate ? getString(R.string.lbl_new_note_title) : getString(R.string.lbl_edit_note_title));
+
+
 
             if (shouldUpdate && note != null) {
                 inputNote.setText(note.getNote());
@@ -246,10 +256,12 @@ public class MainActivity extends AppCompatActivity {
                         updateNote(inputNote.getText().toString(), position);
                     } else {
                         // create new note
-                        createNote(inputNote.getText().toString());
+                        createNote(inputNote.getText().toString(),etTitleNote.getText().toString());
                     }
                 }
             });
+                       alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         }
 
         /**

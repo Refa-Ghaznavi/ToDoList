@@ -5,7 +5,7 @@ public class Note {
 
     private int id;
     private String note;
-    private String title,place;
+    private String title;
 
 
 
@@ -14,11 +14,10 @@ public class Note {
     }
 
 
-    public Note(int id, String note, String title, String place) {
+    public Note(int id, String note, String title) {
         this.id = id;
         this.note = note;
         this.title = title;
-        this.place = place;
     }
 
     public int getId() {
@@ -45,11 +44,5 @@ public class Note {
         this.title = title;
     }
 
-    public String getPlace() {
-        return place;
-    }
 
-    public void setPlace(String place) {
-        this.place = place;
-    }
 }

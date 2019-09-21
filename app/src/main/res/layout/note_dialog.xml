@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView app:cardCornerRadius="32dp"
+<androidx.cardview.widget.CardView
+    app:cardCornerRadius="8dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="8dp"
+    android:layout_margin="16dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,9 +13,6 @@
         android:paddingLeft="@dimen/activity_margin"
         android:paddingRight="@dimen/activity_margin"
         android:paddingTop="@dimen/activity_margin">
-
-
-
 
         <TextView android:id="@+id/dialog_title"
             android:layout_width="wrap_content"
@@ -28,16 +26,29 @@
             android:textStyle="normal" />
 
         <EditText
+            android:id="@+id/titleNote"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@android:color/transparent"
+            android:gravity="top"
+            android:hint="Enter Note Title Here"
+            android:inputType="textCapSentences|textMultiLine"
+            android:textColorHint="@color/hint_enter_note"
+            android:textSize="@dimen/input_new_note" />
+
+        <EditText
             android:id="@+id/note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:gravity="top"
-            android:hint="Enter Note Here"
+            android:hint="Enter Note here"
             android:inputType="textCapSentences|textMultiLine"
-            android:lines="4"
+            android:lines="6"
             android:textColorHint="@color/hint_enter_note"
             android:textSize="@dimen/input_new_note" />
+
+
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
