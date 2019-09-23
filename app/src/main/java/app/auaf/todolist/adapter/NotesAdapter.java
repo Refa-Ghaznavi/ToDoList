@@ -26,15 +26,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView note;
         public TextView noteTitle;
-//        public TextView dot;
-//        public TextView timestamp;
- 
+
         public MyViewHolder(View view) {
             super(view);
             note = view.findViewById(R.id.note);
             noteTitle = view.findViewById(R.id.idTitleNote);
-//            dot = view.findViewById(R.id.dot);
-//            timestamp = view.findViewById(R.id.timestamp);
+
         }
     }
  
@@ -58,7 +55,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
 
         holder.note.setText(note.getNote());
                 holder.noteTitle.setText(note.getTitle());
-
 
     }
  

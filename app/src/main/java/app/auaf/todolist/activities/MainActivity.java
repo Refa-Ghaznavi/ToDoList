@@ -6,19 +6,16 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.CheckBox;
+
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,13 +23,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import app.auaf.todolist.R;
 import app.auaf.todolist.adapter.NotesAdapter;

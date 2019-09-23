@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.auaf.todolist.model.Note;
+import app.auaf.todolist.model.User;
 
 
- 
 public class DatabaseHelper extends SQLiteOpenHelper {
  
     // Database Version
@@ -21,13 +21,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Database Name
     private static final String DATABASE_NAME = "notes_db";
     private static final String TABLE_NAME = "notes";
+    private static final String TABLE_USER = "user";
+
+    private static final String COLUMN_USER_ID = "id";
+    private static final String COLUMN_USER_EMAIL = "email";
+    private static final String COLUMN_USER_PASSWORD = "password";
+
+
+
+
+
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_TITLE = "title";
     private static final String COLUMN_NOTE = "note";
 
 
+    // create table sql query
+    private String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
+            + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_USER_EMAIL + " TEXT," + COLUMN_USER_PASSWORD + " TEXT" + ")";
 
-//Create TABLE QUERY
+
+//Create TABLE QUERY NOTES
     public static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME + "("
                     + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -46,6 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
  
         // create notes table
         db.execSQL(CREATE_TABLE);
+        db.execSQL(CREATE_USER_TABLE);
     }
  
     // Upgrading database
@@ -53,12 +69,156 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
+
  
         // Create tables again
         onCreate(db);
     }
 
-//iNSERTING ONLY NOTE TEXT
+
+
+    /**
+     * This method is to create user record
+     *
+     * @param user
+     */
+    public void addUser(User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_EMAIL, user.getEmail());
+        values.put(COLUMN_USER_PASSWORD, user.getPassword());
+        // Inserting Row
+        db.insert(TABLE_USER, null, values);
+        db.close();
+    }
+
+    /**
+     * This method is to delete user record
+     *
+     * @param user
+     */
+    public void deleteUser(User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        // delete user record by id
+        db.delete(TABLE_USER, COLUMN_USER_ID + " = ?",
+                new String[]{String.valueOf(user.getId())});
+        db.close();
+    }
+
+
+
+    /**
+     * This method to check user exist or not in Database with same email and password
+     *
+     * @param email
+     * @param password
+     * @return true/false
+     */
+    public boolean checkUser(String email, String password) {
+
+        // array of columns to fetch
+        String[] columns = {
+                COLUMN_USER_ID
+        };
+        SQLiteDatabase db = this.getReadableDatabase();
+        // selection criteria
+        String selection = COLUMN_USER_EMAIL + " = ?" + " AND " + COLUMN_USER_PASSWORD + " = ?";
+
+        // selection arguments
+        String[] selectionArgs = {email, password};
+
+        // query user table with conditions
+        /**
+         * Here query function is used to fetch records from user table this function works like we use sql query.
+         * SQL query equivalent to this query function is
+         * SELECT user_id FROM user WHERE user_email = 'jack@androidtutorialshub.com' AND user_password = 'qwerty';
+         */
+        Cursor cursor = db.query(TABLE_USER, //Table to query
+                columns,                    //columns to return
+                selection,                  //columns for the WHERE clause
+                selectionArgs,              //The values for the WHERE clause
+                null,                       //group the rows
+                null,                       //filter by row groups
+                null);                      //The sort order
+
+        int cursorCount = cursor.getCount();
+
+        cursor.close();
+        db.close();
+        if (cursorCount > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+
+
+
+
+
+
+
+    /**
+     * This method to check user exist or not
+     *
+     * @param email
+     * @return true/false
+     */
+    public boolean checkUser(String email) {
+
+        // array of columns to fetch
+        String[] columns = {
+                COLUMN_USER_ID
+        };
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // selection criteria
+        String selection = COLUMN_USER_EMAIL + " = ?";
+
+        // selection argument
+        String[] selectionArgs = {email};
+
+        // query user table with condition
+        /**
+         * Here query function is used to fetch records from user table this function works like we use sql query.
+         * SQL query equivalent to this query function is
+         * SELECT user_id FROM user WHERE user_email = 'jack@androidtutorialshub.com';
+         */
+        Cursor cursor = db.query(TABLE_USER, //Table to query
+                columns,                    //columns to return
+                selection,                  //columns for the WHERE clause
+                selectionArgs,              //The values for the WHERE clause
+                null,                       //group the rows
+                null,                      //filter by row groups
+                null);                      //The sort order
+        int cursorCount = cursor.getCount();
+        cursor.close();
+        db.close();
+
+        if (cursorCount > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //iNSERTING ONLY NOTE TEXT
     public long insertNote(String note,String title) {
         // get writable database as we want to write data
         SQLiteDatabase db = this.getWritableDatabase();
@@ -162,6 +322,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.update(TABLE_NAME, values, COLUMN_ID + " = ?",
                 new String[]{String.valueOf(note.getId())});
     }
+
+
 
     public void deleteNote(Note note) {
         SQLiteDatabase db = this.getWritableDatabase();
